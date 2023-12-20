@@ -1,4 +1,4 @@
-# chawkiForAll Arduino/ESP8266/ESP32 Library by sckill3r
+# chawkiForAll Library by sckill3r
 
 chawkiForAll is an Arduino/ESP8266/ESP32 library that simplifies working with various sensors and modules,
 including: 
