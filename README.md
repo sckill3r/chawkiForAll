@@ -3,11 +3,11 @@
 chawkiForAll is an Arduino/ESP8266/ESP32 library that simplifies working with various sensors and modules,
 including: 
 
-- distance sensors
-- DHT temperature and humidity sensors
-- I2C LCD screens
-- Wi-Fi connections
-- RFID
+- distance sensors (hc-sr04)
+- DHT temperature and humidity sensors (DHT11 / DHT22)
+- I2C LCD screens (16x2)
+- Wi-Fi connections (ESP8266/ESP32)
+- RFID (RC522)
 
 ## Features
 
