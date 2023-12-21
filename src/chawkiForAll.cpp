@@ -1,5 +1,13 @@
 #include "chawkiForAll.h"
 
+#ifdef ARDUINO_ARCH_ESP32 
+  #include "WiFi.h" 
+#endif
+
+#ifdef ARDUINO_ARCH_ESP8266 
+  #include "ESP8266WiFi.h" 
+#endif
+
 chawkiForAll::chawkiForAll() {
 	dht = nullptr; 
     lcd = nullptr;
@@ -62,17 +70,24 @@ void chawkiForAll::clearLCD() {
 void chawkiForAll::initWiFi(const char* ssid, const char* password) {
   this->ssid = ssid;
   this->password = password;
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
   WiFi.begin(ssid, password);
+  #else
+  #endif
 }
 
 bool chawkiForAll::connectToWiFi() {
-  int attempt = 0;
-  while (WiFi.status() != WL_CONNECTED && attempt < 10) {
-    delay(1000);
-    attempt++;
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+	int attempt = 0;
+	while (WiFi.status() != WL_CONNECTED && attempt < 10) {
+		delay(1000);
+		attempt++;
   }
   
-  return WiFi.status() == WL_CONNECTED;
+	return WiFi.status() == WL_CONNECTED;
+  #else
+    return false;
+  #endif
 }
 
 void chawkiForAll::initRFID(uint8_t rfidSDAPin, uint8_t rfidRSTPin) {
