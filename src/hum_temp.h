@@ -15,8 +15,8 @@
  *  MIT license, all text above must be included in any redistribution
  */
 
-#ifndef DHT_H
-#define DHT_H
+#ifndef hum_temp_H
+#define hum_temp_H
 
 #include "Arduino.h"
 
