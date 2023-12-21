@@ -9,10 +9,9 @@ chawkiForAll all;
 #define ECHO_PIN 7
 
 
-#define SSID "your_SSID"
-#define PASSWORD "your_PASSWORD"
 
-#define RFID_SDA_PIN 11
+
+#define RFID_SDA_PIN 11 
 #define RFID_RST_PIN 12
 
 void setup() {
@@ -20,7 +19,6 @@ void setup() {
   all.initDHT(DHT_PIN, DHT_TYPE);
   all.initDistance(TRIG_PIN, ECHO_PIN);
   all.initLCD(0x27,16,2);
-  all.initWiFi(SSID, PASSWORD);
   all.initRFID(RFID_SDA_PIN, RFID_RST_PIN);
 }
 
