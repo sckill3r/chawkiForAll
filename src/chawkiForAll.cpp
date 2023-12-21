@@ -95,6 +95,22 @@ bool chawkiForAll::connectToWiFi() {
   #endif
 }
 
+void chawkiForAll::initRFID(uint8_t rfidSDAPin, uint8_t rfidRSTPin) {
+  mfrc522 = MFRC522(rfidSDAPin, rfidRSTPin);
+  mfrc522.PCD_Init();
+}
+
+bool chawkiForAll::readRFID(String& cardUID) {
+  if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
+    cardUID = "";
+    for (byte i = 0; i < mfrc522.uid.size; i++) {
+      cardUID += String(mfrc522.uid.uidByte[i], HEX);
+    }
+    return true;
+  }
+  return false;
+}
+
 void chawkiForAll::initFb(const char* firebaseHost, const char* databaseSecret) {
   #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
   Firebase.begin(firebaseHost, databaseSecret);
