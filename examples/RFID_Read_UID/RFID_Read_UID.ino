@@ -4,13 +4,14 @@
 
 chawkiForAll all;
 
+String cardUID;
+
 void setup() {
   all.initRFID(SS_PIN, RST_PIN);
 
 }
 
 void loop() {
-   String cardUID;
    
   if (all.readRFID(cardUID)) {
     Serial.print("Card ID: ");
