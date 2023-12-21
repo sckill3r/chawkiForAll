@@ -26,7 +26,7 @@ including:
 3. Select the downloaded chawkiForAll.zip file.
 4. Go to `file -> examples -> chawkiForAll` and enjoy examples
 
-## Dependencies
+## Dependencies (If you will use Firebase)
 
 This library relies on the FirebaseESP32 library to function properly. Please ensure that you have the FirebaseESP32 library installed in your Arduino IDE.
 
