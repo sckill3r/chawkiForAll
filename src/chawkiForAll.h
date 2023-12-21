@@ -29,8 +29,10 @@ class chawkiForAll {
     bool connectToWiFi();
     void initRFID(uint8_t rfidSDAPin, uint8_t rfidRSTPin);
     bool readRFID(String& cardUID);
-	void initFb(const char* firebaseHost, const char* databaseSecret);
-    bool setFbInt(const char* path, int value);
+
+    void initFb(const char* firebaseHost, const char* databaseSecret);
+#if defined(ESP32) || defined(ESP8266)
+	bool setFbInt(const char* path, int value);
     bool setFbFloat(const char* path, float value);
     bool setFbString(const char* path, const char* value);
     bool setFbBool(const char* path, bool value);
@@ -40,6 +42,7 @@ class chawkiForAll {
     bool getFbFloat(const char* path, float& value);
     bool getFbBool(const char* path, bool& value);
     bool getFbDouble(const char* path, double& value);
+#endif
 
   private:
     DHT *dht;
@@ -49,8 +52,10 @@ class chawkiForAll {
     const char* ssid;
     const char* password;
     RFID rfid;
+#if defined(ESP32) || defined(ESP8266)
     FirebaseData firebaseData;
     bool firebaseInitialized; 
+#endif
 };
 
 #endif
