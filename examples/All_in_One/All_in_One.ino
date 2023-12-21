@@ -8,15 +8,15 @@ chawkiForAll all;
 #define TRIG_PIN 6
 #define ECHO_PIN 7
 
-#define RFID_SDA_PIN 11 
-#define RFID_RST_PIN 12
+#define SS_PIN 11 
+#define RST_PIN 12
 
 void setup() {
   Serial.begin(9600);
   all.initDHT(DHT_PIN, DHT_TYPE);
   all.initDistance(TRIG_PIN, ECHO_PIN);
   all.initLCD(0x27,16,2);
-  all.initRFID(RFID_SDA_PIN, RFID_RST_PIN);
+  all.initRFID(SS_PIN, RST_PIN);
 }
 
 void loop() {
