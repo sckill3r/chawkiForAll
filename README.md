@@ -22,9 +22,9 @@ including:
 ## Installation
 
 1. Download the chawkiForAll library from this repository.
-2. In the Arduino IDE, go to Sketch -> Include Library -> Add .ZIP Library.
+2. In the Arduino IDE, go to 'Sketch -> Include Library -> Add .ZIP Library'.
 3. Select the downloaded chawkiForAll.zip file.
-4. Go to file -> examples -> chawkiForAll and enjoy examples
+4. Go to 'file -> examples -> chawkiForAll' and enjoy examples
 
 ## Dependencies
 
