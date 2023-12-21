@@ -3,8 +3,8 @@
 
 #include "Arduino.h"
 #include <DHT.h>
-#include <LiquidCrystal_I2C.h>
-#include <MFRC522.h>
+#include <screen_I2C.h>
+#include <RFID.h>
 
 #if defined(ESP32)
 #include <WiFi.h>
@@ -45,10 +45,10 @@ class chawkiForAll {
     DHT *dht;
     uint8_t trigPin;
     uint8_t echoPin;
-    LiquidCrystal_I2C *lcd;
+    screen_I2C *lcd;
     const char* ssid;
     const char* password;
-    MFRC522 mfrc522;
+    RFID rfid;
     FirebaseData firebaseData;
     bool firebaseInitialized; 
 };

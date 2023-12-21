@@ -1,7 +1,7 @@
 /*!
- *  @file DHT.h
+ *  @file hum_temp.h
  *
- *  This is a library for DHT series of low cost temperature/humidity sensors.
+ *  This is a library for hum_temp series of low cost temperature/humidity sensors.
  *
  *  You must have Adafruit Unified Sensor Library library installed to use this
  * class.
@@ -21,14 +21,14 @@
 #include "Arduino.h"
 
 /* Uncomment to enable printing out nice debug messages. */
-//#define DHT_DEBUG
+//#define hum_temp_DEBUG
 
 #define DEBUG_PRINTER                                                          \
   Serial /**< Define where debug output will be printed.                       \
           */
 
 /* Setup debug printing macros. */
-#ifdef DHT_DEBUG
+#ifdef hum_temp_DEBUG
 #define DEBUG_PRINT(...)                                                       \
   { DEBUG_PRINTER.print(__VA_ARGS__); }
 #define DEBUG_PRINTLN(...)                                                     \
@@ -41,10 +41,10 @@
 #endif
 
 /* Define types of sensors. */
-static const uint8_t DHT11{11};  /**< DHT TYPE 11 */
-static const uint8_t DHT12{12};  /**< DHY TYPE 12 */
-static const uint8_t DHT21{21};  /**< DHT TYPE 21 */
-static const uint8_t DHT22{22};  /**< DHT TYPE 22 */
+static const uint8_t hum_temp11{11};  /**< hum_temp TYPE 11 */
+static const uint8_t hum_temp12{12};  /**< DHY TYPE 12 */
+static const uint8_t hum_temp21{21};  /**< hum_temp TYPE 21 */
+static const uint8_t hum_temp22{22};  /**< hum_temp TYPE 22 */
 static const uint8_t AM2301{21}; /**< AM2301 */
 
 #if defined(TARGET_NAME) && (TARGET_NAME == ARDUINO_NANO33BLE)
@@ -58,11 +58,11 @@ static const uint8_t AM2301{21}; /**< AM2301 */
 #endif
 
 /*!
- *  @brief  Class that stores state and functions for DHT
+ *  @brief  Class that stores state and functions for hum_temp
  */
-class DHT {
+class hum_temp {
 public:
-  DHT(uint8_t pin, uint8_t type, uint8_t count = 6);
+  hum_temp(uint8_t pin, uint8_t type, uint8_t count = 6);
   void begin(uint8_t usec = 55);
   float readTemperature(bool S = false, bool force = false);
   float convertCtoF(float);
@@ -78,7 +78,7 @@ private:
   uint8_t _pin, _type;
 #ifdef __AVR
   // Use direct GPIO access on an 8-bit AVR so keep track of the port and
-  // bitmask for the digital pin connected to the DHT.  Other platforms will use
+  // bitmask for the digital pin connected to the hum_temp.  Other platforms will use
   // digitalRead.
   uint8_t _bit, _port;
 #endif

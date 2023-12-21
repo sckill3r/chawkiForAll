@@ -53,7 +53,7 @@ float chawkiForAll::measureDistance() {
 }
 
 void chawkiForAll::initLCD(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows) {
-  lcd = new LiquidCrystal_I2C(lcd_addr, lcd_cols, lcd_rows);
+  lcd = new screen_I2C(lcd_addr, lcd_cols, lcd_rows);
   lcd->begin();
   lcd->backlight();
 }
@@ -96,15 +96,15 @@ bool chawkiForAll::connectToWiFi() {
 }
 
 void chawkiForAll::initRFID(uint8_t rfidSDAPin, uint8_t rfidRSTPin) {
-  mfrc522 = MFRC522(rfidSDAPin, rfidRSTPin);
-  mfrc522.PCD_Init();
+  rfid = RFID(rfidSDAPin, rfidRSTPin);
+  rfid.PCD_Init();
 }
 
 bool chawkiForAll::readRFID(String& cardUID) {
-  if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
+  if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
     cardUID = "";
-    for (byte i = 0; i < mfrc522.uid.size; i++) {
-      cardUID += String(mfrc522.uid.uidByte[i], HEX);
+    for (byte i = 0; i < rfid.uid.size; i++) {
+      cardUID += String(rfid.uid.uidByte[i], HEX);
     }
     return true;
   }
