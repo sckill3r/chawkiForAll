@@ -8,9 +8,6 @@ chawkiForAll all;
 #define TRIG_PIN 6
 #define ECHO_PIN 7
 
-
-
-
 #define RFID_SDA_PIN 11 
 #define RFID_RST_PIN 12
 
