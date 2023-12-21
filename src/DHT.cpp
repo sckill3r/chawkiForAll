@@ -23,7 +23,7 @@
  *  MIT license, all text above must be included in any redistribution
  */
 
-#include "DHT.h"
+#include "hum_temp.h"
 
 #define MIN_INTERVAL 2000 /**< min interval value */
 #define TIMEOUT                                                                \
