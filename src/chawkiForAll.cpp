@@ -2,15 +2,18 @@
 
 #ifdef ARDUINO_ARCH_ESP32 
   #include "WiFi.h" 
+  #include "FirebaseESP32.h"
 #endif
 
 #ifdef ARDUINO_ARCH_ESP8266 
   #include "ESP8266WiFi.h" 
+  #include "FirebaseESP32.h"
 #endif
-
+FirebaseData firebaseData;
 chawkiForAll::chawkiForAll() {
 	dht = nullptr; 
     lcd = nullptr;
+    firebaseInitialized = false;
 }
 
 void chawkiForAll::initDHT(uint8_t pin, uint8_t type) {
@@ -20,17 +23,18 @@ void chawkiForAll::initDHT(uint8_t pin, uint8_t type) {
 
 float chawkiForAll::readTemperature() {
   if (dht != nullptr) {
-    return dht->readTemperature(); // Use arrow operator to access member function
+    return dht->readTemperature();
   }
   return NAN;
 }
 
 float chawkiForAll::readHumidity() {
   if (dht != nullptr) {
-    return dht->readHumidity(); // Use arrow operator to access member function
+    return dht->readHumidity();
   }
   return NAN;
 }
+
 void chawkiForAll::initDistance(uint8_t trigPin, uint8_t echoPin) {
   this->trigPin = trigPin;
   this->echoPin = echoPin;
@@ -45,7 +49,7 @@ float chawkiForAll::measureDistance() {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   unsigned long duration = pulseIn(echoPin, HIGH);
-  return (duration / 2) * 0.0343;
+  return (duration / 2) * 0.0340;
 }
 
 void chawkiForAll::initLCD(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows) {
@@ -64,7 +68,9 @@ void chawkiForAll::displayMessage(const char* line1, const char* line2) {
 }
 
 void chawkiForAll::clearLCD() {
-  lcd->clear();
+  if (lcd != nullptr) {
+    lcd->clear();
+  }
 }
 
 void chawkiForAll::initWiFi(const char* ssid, const char* password) {
@@ -72,7 +78,6 @@ void chawkiForAll::initWiFi(const char* ssid, const char* password) {
   this->password = password;
   #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
   WiFi.begin(ssid, password);
-  #else
   #endif
 }
 
@@ -90,18 +95,119 @@ bool chawkiForAll::connectToWiFi() {
   #endif
 }
 
-void chawkiForAll::initRFID(uint8_t rfidSDAPin, uint8_t rfidRSTPin) {
-  mfrc522 = MFRC522(rfidSDAPin, rfidRSTPin);
-  mfrc522.PCD_Init();
+void chawkiForAll::initFb(const char* firebaseHost, const char* databaseSecret) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  Firebase.begin(firebaseHost, databaseSecret);
+  firebaseInitialized = true;
+  #endif
 }
 
-bool chawkiForAll::readRFID(String& cardUID) {
-  if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
-    cardUID = "";
-    for (byte i = 0; i < mfrc522.uid.size; i++) {
-      cardUID += String(mfrc522.uid.uidByte[i], HEX);
-    }
+bool chawkiForAll::setFbInt(const char* path, int value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    Firebase.setInt(firebaseData, path, value);
     return true;
   }
+  #endif
   return false;
+}
+
+bool chawkiForAll::setFbFloat(const char* path, float value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    Firebase.setFloat(firebaseData, path, value);
+    return true;
+  }
+  #endif
+  return false;
+}
+
+bool chawkiForAll::setFbString(const char* path, const char* value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    Firebase.setString(firebaseData, path, value);
+    return true;
+  }
+  #endif
+  return false;
+}
+
+bool chawkiForAll::setFbBool(const char* path, bool value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    Firebase.setBool(firebaseData, path, value);
+    return true;
+  }
+  #endif
+  return false;
+}
+
+bool chawkiForAll::setFbDouble(const char* path, double value) {
+    #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+    if (firebaseInitialized) {
+        Firebase.setDouble(firebaseData, path, value);
+        return true;
+    }
+    #endif
+    return false;
+}
+
+bool chawkiForAll::getFbString(const char* path, String& value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    if (Firebase.getString(firebaseData, path)) {
+      value = firebaseData.stringData();
+      return true;
+    }
+  }
+  #endif
+  return false;
+}
+
+bool chawkiForAll::getFbInt(const char* path, int& value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    if (Firebase.getInt(firebaseData, path)) {
+      value = firebaseData.intData();
+      return true;
+    }
+  }
+  #endif
+  return false;
+}
+
+bool chawkiForAll::getFbFloat(const char* path, float& value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    if (Firebase.getFloat(firebaseData, path)) {
+      value = firebaseData.floatData();
+      return true;
+    }
+  }
+  #endif
+  return false;
+}
+
+bool chawkiForAll::getFbBool(const char* path, bool& value) {
+  #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+  if (firebaseInitialized) {
+    if (Firebase.getBool(firebaseData, path)) {
+      value = firebaseData.boolData();
+      return true;
+    }
+  }
+  #endif
+  return false;
+}
+
+bool chawkiForAll::getFbDouble(const char* path, double& value) {
+    #if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+    if (firebaseInitialized) {
+        if (Firebase.getDouble(firebaseData, path)) {
+            value = firebaseData.doubleData();
+            return true;
+        }
+    }
+    #endif
+    return false;
 }
