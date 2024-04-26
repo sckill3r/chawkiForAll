@@ -33,9 +33,11 @@ This library relies on the FirebaseESP32 library to function properly. Please en
 ### Installing FirebaseESP32 Library
 
 1. Open Arduino IDE.
-2. Go to `Sketch -> Include Library -> Manage Libraries`.
-3. Search for "FirebaseESP32" in the Library Manager.
-4. Click "Install" to install the FirebaseESP32 library.
+2. Go to my github.
+3. Search for "FirebaseESP32" an edited version and download it.
+4. In the Arduino IDE, go to `Sketch -> Include Library -> Add .ZIP Library`.
+5. Select the downloaded FirebaseESP32.zip file.
+6. ENJOY !! 
 
 
 ## License
