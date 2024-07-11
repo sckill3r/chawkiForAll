@@ -2,7 +2,7 @@
 #define chawkiForAll_h
 
 #include "Arduino.h"
-#include <DHT.h>
+#include <hum_temp.h>
 #include <screen_I2C.h>
 #include <RFID.h>
 
